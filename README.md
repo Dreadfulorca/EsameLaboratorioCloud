@@ -60,7 +60,8 @@ Per connettersi al database MySQL:
 ```bash
 docker compose exec mysql mysql -u $DB_USER -p $DB_NAME
 ```
-Stop servizi
+### Stop servizi
+Per fermare tutti i container in esecuzione:
 ```bash
 docker compose down
 ```
