@@ -60,11 +60,12 @@ Per connettersi al database MySQL:
 ```bash
 docker compose exec mysql mysql -u $DB_USER -p $DB_NAME
 ```
-Variabili d'Ambiente (.env)
-DB_NAME: Nome database MySQL
-DB_USER: Utente database
-NGINX_PORT: Porta di accesso (default: 8080)
-Docker Secrets
+### Variabili d'Ambiente (.env)
+- DB_NAME: Nome database MySQL
+- DB_USER: Utente database
+- NGINX_PORT: Porta di accesso (default: 8080)
+  
+### Docker Secrets
 La password del database è gestita tramite Docker Secrets nel file secrets/db_password.txt
 
 ### Stop servizi
