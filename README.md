@@ -54,19 +54,10 @@ L'output dovrebbe mostrare tutti i container con stato "running".
 
 3. Dopo l'autenticazione verrai reindirizzato automaticamente all'applicazione WebGL.
 
-### Accesso al Database
-
-Per connettersi al database MySQL:
-```bash
-docker compose exec mysql mysql -u $DB_USER -p $DB_NAME
-```
 ### Variabili d'Ambiente (.env)
 - DB_NAME: Nome database MySQL
 - DB_USER: Utente database
 - NGINX_PORT: Porta di accesso (default: 8080)
-  
-### Docker Secrets
-La password del database è gestita tramite Docker Secrets nel file secrets/db_password.txt
 
 ### Stop servizi
 Per fermare tutti i container in esecuzione:
@@ -77,5 +68,5 @@ docker compose down
 
 - Tutte le comunicazioni tra container avvengono su una rete Docker privata
 - L'accesso all'applicazione WebGL è protetto da autenticazione
-- Le credenziali del database sono gestite tramite Docker Secrets
+- Le credenziali del database sono gestite tramite Docker Secrets nel file secrets/db_password.txt
 - Solo il reverse proxy Nginx è esposto esternamente
