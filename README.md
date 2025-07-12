@@ -4,6 +4,26 @@
 
 Questo progetto realizza un'infrastruttura containerizzata per un'applicazione WebGL accessibile solo previa autenticazione. Tutti i componenti sono orchestrati tramite Docker Compose e isolati in container separati per una maggiore sicurezza e manutenibilità.
 
+### Spiegazione del Sistema
+
+Per il progetto ho realizzato un’infrastruttura containerizzata composta da più servizi: un sistema di autenticazione, un database MySQL, un reverse proxy Nginx e un’applicazione WebGL servita tramite Apache. 
+
+L’autenticazione è gestita da un microservizio in Node.js con Express, che permette agli utenti di effettuare il login tramite una pagina HTML. 
+Le credenziali vengono verificate confrontandole con i dati presenti nella tabella users nel database MySQL, e in caso di successo viene creata una sessione con express-session. 
+Ogni accesso viene anche registrato nella tabella login_logs, salvando IP e browser dell’utente. 
+
+Per connettersi al database, il backend legge la password tecnica del database da un Docker Secret, che viene montato nel container in modo sicuro. Il percorso di questo file viene passato tramite la variabile d’ambiente DB_PASSWORD_FILE. 
+È importante sottolineare che questa non è la password dell’utente, ma quella usata dal backend per collegarsi a MySQL. 
+
+Tutto il traffico esterno passa attraverso un reverse proxy Nginx, che ascolta sulla porta 8080. Nginx ha il compito di smistare le richieste ai vari container interni: ad esempio, quelle per il login al backend Node.js e quelle per l'applicazione WebGL verso Apache. 
+Questo permette di isolare i container interni e di avere un unico punto di accesso, rendendo l’infrastruttura più sicura e modulare. 
+
+Il database MySQL viene inizializzato automaticamente grazie a uno script init.sql che crea il database, le tabelle e tre utenti di test. I dati persistono grazie all’uso di volumi Docker, in modo da non essere persi al riavvio del container. 
+
+Anche l’applicazione WebGL è stata containerizzata separatamente, utilizzando Apache come server web. I file statici vengono copiati in una directory esposta da Apache, e l’utente può accedervi solo dopo l’autenticazione, sempre passando per il reverse proxy. 
+
+L’intera infrastruttura è orchestrata con Docker Compose che ci permette di lanciare, configurare, collegare i vari container in un rete privata e coordinarli tra loro, inoltre l'infrastruttura è stata configurata tramite variabili d’ambiente, che rendono il sistema facilmente portabile e adattabile. 
+Solo i servizi essenziali vengono esposti, seguendo i principi di sicurezza per isolamento, e l’accesso alla WebGL App è protetto da autenticazione. 
 ## Componenti Principali
 
 1. **Frontend**: Applicazione WebGL servita da Apache HTTP Server
